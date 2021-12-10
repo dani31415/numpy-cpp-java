@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "python.h": "c"
+        "python.h": "c",
+        "country_side.h": "c",
+        "country_side.hpp": "c",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     }
 }

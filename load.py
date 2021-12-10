@@ -7,11 +7,11 @@ if result!=0:
 sys.path.insert(0, './environment')
 
 import numpy as np
-import spam
+import model
 
 A=np.array([[1.0,2,3]])
-print(A)
-n=spam.ndim(A)
-print(n)
-n=spam.ndim(9)
-print(n)
+# print(A)
+n=model.ndim(A)
+# print(n)
+I=model.image()
+# print(n)

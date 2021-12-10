@@ -3,8 +3,11 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/usr/include/python3.8"
+                "${workspaceFolder}/environment/**",
+                "${workspaceFolder}/.env/**",
+                "/usr/include/python3.8",
+                "/usr/include/c++/9",
+                "/usr/include/x86_64-linux-gnu/c++/9"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
