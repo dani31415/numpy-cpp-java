@@ -50,7 +50,7 @@ bool Java::init() {
     vm_args.ignoreUnrecognized = 0;
     vm_args.nOptions = 1;
     vm_args.options = new JavaVMOption[1];
-    vm_args.options[0].optionString = (char*)"-Djava.class.path=/home/user/numpy-cpp/environment/.class";
+    vm_args.options[0].optionString = (char*)"-Djava.class.path=/home/user/numpy-cpp-java/environment/.class";
     vm_args.options[0].extraInfo = NULL;
     vm_args.version = JNI_VERSION_10; /* New in 1.1.2: VM version */
     /* Get the default initialization arguments and set the class 
