@@ -1,3 +1,4 @@
 .env/**
-environment/.tmp/**
+environment/.o/**
+environment/.class/**
 environment/*.so

@@ -5,9 +5,10 @@
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <numpy/core/include/numpy/ndarrayobject.h>
 
-#include "model/country_side.h"
+#include "java.h"
 
 static PyObject *ModelError;
+static Java java;
 
 static PyObject *
 model_system(PyObject *self, PyObject *args)
@@ -41,19 +42,26 @@ model_ndim(PyObject *self, PyObject *args)
 static PyObject *
 model_image(PyObject *self, PyObject *args)
 {
-    CountrySide cs;
-    matrix<float> & A = cs.getImage();
+    Java::Dims imageDims = java.getImageDims();
     npy_intp dims[2];
-    dims[0] = A.m();;
-    dims[1] = A.n();
+    dims[0] = imageDims.height;
+    dims[1] = imageDims.width;
     PyArrayObject * array = (PyArrayObject *)PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *buffer = (float*)PyArray_DATA(array);
-    for (int i=0;i<dims[0];i++) {
-        for (int j=0;j<dims[1];j++) {
-            buffer[i*dims[1]+j] = A[i][j];
-        }
-    }
-    // buffer[0] = 1.f;
+    java.copyImage(buffer);
+    return (PyObject*)array;
+}
+
+static PyObject *
+model_imageDims(PyObject *self, PyObject *args)
+{
+    Java::Dims imageDims = java.getImageDims();
+    npy_intp dims[1];
+    dims[0] = 2;
+    PyArrayObject * array = (PyArrayObject *)PyArray_SimpleNew(1, dims, NPY_INT64);
+    long *buffer = (long*)PyArray_DATA(array);
+    buffer[0] = imageDims.height;
+    buffer[1] = imageDims.width;
     return (PyObject*)array;
 }
 
@@ -62,6 +70,8 @@ static PyMethodDef modelMethods[] = {
      "Execute a shell command."},
     {"ndim",  model_ndim, METH_VARARGS,
      "Get number of dimensions."},
+    {"imageDims",  model_imageDims, METH_VARARGS,
+     "Get dimensions of image."},
     {"image",  model_image, METH_VARARGS,
      "Get image."},
     {NULL, NULL, 0, NULL}        /* Sentinel */
@@ -79,7 +89,13 @@ static struct PyModuleDef modelModule = {
 PyMODINIT_FUNC
 PyInit_model(void)
 {
-    import_array(); // Initialize Numpy
+    printf("Start initialized.\n");
+    // Initialize Numpy
+    import_array();
+
+    // Initialize Java
+    if (!java.init()) 
+        return NULL;
 
     // Create module
     PyObject *m;    
@@ -96,6 +112,6 @@ PyInit_model(void)
         Py_DECREF(m);
         return NULL;
     }
-
+    printf("Module initialized.\n");
     return m;
 }

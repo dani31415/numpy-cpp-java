@@ -6,5 +6,8 @@
         "array": "cpp",
         "string": "cpp",
         "string_view": "cpp"
-    }
+    },
+    "java.project.sourcePaths": [
+        "environment/model/src"
+    ]
 }
